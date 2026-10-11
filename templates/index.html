@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats">
+  <div class="card">
+    <span>Total Rooms</span>
+    <strong>{{ total_rooms }}</strong>
+  </div>
+  <div class="card">
+    <span>Students</span>
+    <strong>{{ total_students }}</strong>
+  </div>
+  <div class="card">
+    <span>Occupied Rooms</span>
+    <strong>{{ occupied_rooms }}</strong>
+  </div>
+  <div class="card">
+    <span>Revenue</span>
+    <strong>₹{{ '{:,.0f}'.format(total_revenue) }}</strong>
+  </div>
+</div>
+
+<section class="panel">
+  <h2>Record Payment</h2>
+  <form action="{{ url_for('add_payment') }}" method="post" class="form-grid">
+    <label>
+      Student
+      <select name="student_id" required>
+        {% for student in students %}
+          <option value="{{ student.id }}">{{ student.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      Amount
+      <input type="number" name="amount" min="1" step="0.01" required />
+    </label>
+    <label>
+      Method
+      <select name="method" required>
+        <option value="Cash">Cash</option>
+        <option value="UPI">UPI</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+      </select>
+    </label>
+    <button type="submit">Save Payment</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Recent Payments</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Amount</th>
+        <th>Method</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for payment in recent_payments %}
+      <tr>
+        <td>{{ payment.student_name }}</td>
+        <td>₹{{ '{:,.0f}'.format(payment.amount) }}</td>
+        <td>{{ payment.method }}</td>
+        <td>{{ payment.paid_on }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4">No payments recorded yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
