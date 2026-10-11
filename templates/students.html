@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Students{% endblock %}
+{% block content %}
+<h1>Students</h1>
+<section class="panel">
+  <h2>Add Student</h2>
+  <form action="{{ url_for('add_student') }}" method="post" class="form-grid">
+    <label>
+      Name
+      <input type="text" name="name" required />
+    </label>
+    <label>
+      Phone
+      <input type="tel" name="phone" required />
+    </label>
+    <label>
+      Room
+      <select name="room_id" required>
+        {% for room in rooms %}
+          <option value="{{ room.id }}">{{ room.room_number }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      Check-in Date
+      <input type="date" name="check_in" />
+    </label>
+    <button type="submit">Add Student</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Student List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Room</th>
+        <th>Check-in</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <td>{{ student.name }}</td>
+        <td>{{ student.phone }}</td>
+        <td>{{ student.room_number }}</td>
+        <td>{{ student.check_in }}</td>
+        <td>{{ student.status }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5">No students found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

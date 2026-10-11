@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Rooms{% endblock %}
+{% block content %}
+<h1>Rooms</h1>
+<section class="panel">
+  <h2>Add Room</h2>
+  <form action="{{ url_for('add_room') }}" method="post" class="form-grid">
+    <label>
+      Room Number
+      <input type="text" name="room_number" required />
+    </label>
+    <label>
+      Capacity
+      <input type="number" name="capacity" min="1" required />
+    </label>
+    <label>
+      Rent
+      <input type="number" name="rent" min="1" required />
+    </label>
+    <button type="submit">Add Room</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Room List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Room</th>
+        <th>Capacity</th>
+        <th>Occupied</th>
+        <th>Rent</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for room in rooms %}
+      <tr>
+        <td>{{ room.room_number }}</td>
+        <td>{{ room.capacity }}</td>
+        <td>{{ room.occupied_students }}</td>
+        <td>₹{{ '{:,.0f}'.format(room.rent) }}</td>
+        <td>{{ 'Available' if room.capacity > room.occupied_students else 'Full' }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5">No rooms found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
